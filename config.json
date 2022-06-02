@@ -1,0 +1,38 @@
+{
+  "name": "maven",
+  "viewName": "Maven",
+  "version": "0.1.0",
+  "type": "executer",
+  "execProgram": "node",
+  "imgUrl": "logo.png",
+  "main": "app.js",
+  "description": "Kaholo Plugin for Maven CLI",
+  "methods": [
+    {
+      "name": "testCli",
+      "viewName": "Get Maven Version",
+      "params": []
+    },
+    {
+      "name": "runCommand",
+      "viewName": "Run Maven Command",
+      "params": [
+        {
+          "name": "workingDirectory",
+          "viewName": "Working Directory",
+          "type": "string",
+          "description": "Path to a directory on agent which will be mounted in the docker container and used as the working directory.",
+          "placeholder": "/home/user/Desktop/maven-project"
+        },
+        {
+          "name": "command",
+          "viewName": "Command",
+          "type": "string",
+          "description": "Maven command to execute in the docker container.",
+          "placeholder": "mvn package",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

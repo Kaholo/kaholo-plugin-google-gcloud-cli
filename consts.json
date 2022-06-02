@@ -1,0 +1,4 @@
+{
+  "MAVEN_DOCKER_IMAGE": "maven",
+  "MAVEN_CLI_NAME": "mvn"
+}

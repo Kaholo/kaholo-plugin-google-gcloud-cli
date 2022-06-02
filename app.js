@@ -1,8 +1,7 @@
-function hello(name) {
-  const greeting = `hello ${name}`;
-  return greeting;
-}
+const kaholoPluginLibrary = require("@kaholo/plugin-library");
+const { execute } = require("./mvn-cli");
 
-module.exports = {
-  hello,
-};
+module.exports = kaholoPluginLibrary.bootstrap({
+  testCli: () => execute({ command: "mvn --version" }),
+  runCommand: execute,
+});
