@@ -21,14 +21,15 @@
           "name": "workingDirectory",
           "viewName": "Working Directory",
           "type": "string",
-          "description": "Path to a directory on agent which will be mounted in the docker container and used as the working directory.",
-          "placeholder": "/home/user/Desktop/maven-project"
+          "description": "Path to a directory on the Kaholo agent which contains pom.xml and all other files needed to complete the Maven build.",
+          "placeholder": "/home/myproject/myapp",
+          "required": true
         },
         {
           "name": "command",
           "viewName": "Command",
           "type": "string",
-          "description": "Maven command to execute in the docker container.",
+          "description": "Maven command to do the required build.",
           "placeholder": "mvn package",
           "required": true
         }
