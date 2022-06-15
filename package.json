@@ -1,6 +1,5 @@
 {
   "name": "kaholo-plugin-maven",
-  "version": "1.0.0",
   "description": "Kaholo plugin for Maven",
   "main": "app.js",
   "scripts": {
