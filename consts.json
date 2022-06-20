@@ -1,4 +1,5 @@
 {
   "MAVEN_DOCKER_IMAGE": "maven",
-  "MAVEN_CLI_NAME": "mvn"
+  "MAVEN_CLI_NAME": "mvn",
+  "MAVEN_CACHE_DIRECTORY_NAME": ".m2"
 }

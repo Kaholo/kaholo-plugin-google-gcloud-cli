@@ -1,4 +1,6 @@
 const { docker } = require("@kaholo/plugin-library");
+const { join: joinPaths } = require("path");
+const { homedir: getHomeDirectory } = require("os");
 const {
   exec,
   assertPathExistence,
@@ -6,6 +8,7 @@ const {
 const {
   MAVEN_DOCKER_IMAGE,
   MAVEN_CLI_NAME,
+  MAVEN_CACHE_DIRECTORY_NAME,
 } = require("./consts.json");
 
 async function execute({ command, workingDirectory }) {
@@ -14,25 +17,42 @@ async function execute({ command, workingDirectory }) {
     image: MAVEN_DOCKER_IMAGE,
   };
 
-  let shellEnvironmentalVariables = {};
+  const mavenAgentCachePath = joinPaths(getHomeDirectory(), MAVEN_CACHE_DIRECTORY_NAME);
+  const mavenCacheVolumeDefinition = docker.createVolumeDefinition(mavenAgentCachePath);
+  // Change mount point to maven cache path
+  mavenCacheVolumeDefinition.mountPoint.value = joinPaths("/root", MAVEN_CACHE_DIRECTORY_NAME);
+
+  let dockerEnvironmentalVariables = {
+    [mavenCacheVolumeDefinition.mountPoint.name]: mavenCacheVolumeDefinition.mountPoint.value,
+  };
+  let shellEnvironmentalVariables = {
+    ...dockerEnvironmentalVariables,
+    [mavenCacheVolumeDefinition.path.name]: mavenCacheVolumeDefinition.path.value,
+  };
+
+  const volumeDefinitionsArray = [mavenCacheVolumeDefinition];
 
   if (workingDirectory) {
     await assertPathExistence(workingDirectory);
     const volumeDefinition = docker.createVolumeDefinition(workingDirectory);
 
-    const dockerEnvironmentalVariables = {
-      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value
+    dockerEnvironmentalVariables = {
+      ...dockerEnvironmentalVariables,
+      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value,
     };
 
     shellEnvironmentalVariables = {
+      ...shellEnvironmentalVariables,
       ...dockerEnvironmentalVariables,
       [volumeDefinition.path.name]: volumeDefinition.path.value,
     };
 
-    dockerCommandBuildOptions.environmentVariables = dockerEnvironmentalVariables;
-    dockerCommandBuildOptions.volumeDefinitionsArray = [volumeDefinition];
+    volumeDefinitionsArray.push(volumeDefinition);
     dockerCommandBuildOptions.workingDirectory = volumeDefinition.mountPoint.value;
   }
+
+  dockerCommandBuildOptions.volumeDefinitionsArray = volumeDefinitionsArray;
+  dockerCommandBuildOptions.environmentVariables = dockerEnvironmentalVariables;
 
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
