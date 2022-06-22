@@ -9,11 +9,6 @@
   "description": "Kaholo Plugin for Maven CLI",
   "methods": [
     {
-      "name": "testCli",
-      "viewName": "Get Maven Version",
-      "params": []
-    },
-    {
       "name": "runCommand",
       "viewName": "Run Maven Command",
       "params": [
