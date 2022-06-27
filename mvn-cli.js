@@ -9,34 +9,35 @@ const {
 } = require("./consts.json");
 
 async function execute({ command, workingDirectory }) {
-  const volumeConfigsMap = new Map();
-  if (workingDirectory) {
-    await assertPathExistence(workingDirectory);
-    volumeConfigsMap.set("workingDirectory", docker.createVolumeConfig(workingDirectory));
-  }
-
-  const volumeConfigsArray = [...volumeConfigsMap.values()];
-  const {
-    environmentVariablesRequiredByDocker,
-    environmentVariablesRequiredByShell,
-  } = docker.extractEnvironmentVariablesFromVolumeConfigs(volumeConfigsArray);
-
-  const sanitizedCommand = docker.sanitizeCommand(command, MAVEN_CLI_NAME);
   const dockerCommandBuildOptions = {
-    command: sanitizedCommand,
+    command: docker.sanitizeCommand(command, MAVEN_CLI_NAME),
     image: MAVEN_DOCKER_IMAGE,
-    environmentVariables: Object.keys(environmentVariablesRequiredByDocker),
-    volumeConfigs: volumeConfigsArray,
   };
 
-  if (volumeConfigsMap.has("workingDirectory")) {
-    dockerCommandBuildOptions.workingDirectory = volumeConfigsMap.get("workingDirectory").mountPoint.value;
+  let shellEnvironmentalVariables = {};
+
+  if (workingDirectory) {
+    await assertPathExistence(workingDirectory);
+    const volumeDefinition = docker.createVolumeDefinition(workingDirectory);
+
+    const dockerEnvironmentalVariables = {
+      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value
+    };
+
+    shellEnvironmentalVariables = {
+      ...dockerEnvironmentalVariables,
+      [volumeDefinition.path.name]: volumeDefinition.path.value,
+    };
+
+    dockerCommandBuildOptions.environmentVariables = dockerEnvironmentalVariables;
+    dockerCommandBuildOptions.volumeDefinitionsArray = [volumeDefinition];
+    dockerCommandBuildOptions.workingDirectory = volumeDefinition.mountPoint.value;
   }
 
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
   return exec(dockerCommand, {
-    env: environmentVariablesRequiredByShell,
+    env: shellEnvironmentalVariables,
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
