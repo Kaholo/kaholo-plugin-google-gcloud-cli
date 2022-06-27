@@ -22,7 +22,7 @@ async function execute({ command, workingDirectory }) {
   // Change mount point to maven cache path
   mavenCacheVolumeDefinition.mountPoint.value = joinPaths("/root", MAVEN_CACHE_DIRECTORY_NAME);
 
-  let dockerEnvironmentalVariables = {
+  const dockerEnvironmentalVariables = {
     [mavenCacheVolumeDefinition.mountPoint.name]: mavenCacheVolumeDefinition.mountPoint.value,
   };
   let shellEnvironmentalVariables = {
@@ -34,21 +34,20 @@ async function execute({ command, workingDirectory }) {
 
   if (workingDirectory) {
     await assertPathExistence(workingDirectory);
-    const volumeDefinition = docker.createVolumeDefinition(workingDirectory);
+    const workingDirectoryVolumeDefinition = docker.createVolumeDefinition(workingDirectory);
 
-    dockerEnvironmentalVariables = {
-      ...dockerEnvironmentalVariables,
-      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value,
-    };
+    dockerEnvironmentalVariables[workingDirectoryVolumeDefinition.mountPoint.name] = (
+      workingDirectoryVolumeDefinition.mountPoint.value
+    );
 
     shellEnvironmentalVariables = {
       ...shellEnvironmentalVariables,
       ...dockerEnvironmentalVariables,
-      [volumeDefinition.path.name]: volumeDefinition.path.value,
+      [workingDirectoryVolumeDefinition.path.name]: workingDirectoryVolumeDefinition.path.value,
     };
 
-    volumeDefinitionsArray.push(volumeDefinition);
-    dockerCommandBuildOptions.workingDirectory = volumeDefinition.mountPoint.value;
+    volumeDefinitionsArray.push(workingDirectoryVolumeDefinition);
+    dockerCommandBuildOptions.workingDirectory = workingDirectoryVolumeDefinition.mountPoint.value;
   }
 
   dockerCommandBuildOptions.volumeDefinitionsArray = volumeDefinitionsArray;
