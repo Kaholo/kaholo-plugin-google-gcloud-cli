@@ -21,7 +21,7 @@ async function execute({ command, workingDirectory }) {
     const volumeDefinition = docker.createVolumeDefinition(workingDirectory);
 
     const dockerEnvironmentalVariables = {
-      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value
+      [volumeDefinition.mountPoint.name]: volumeDefinition.mountPoint.value,
     };
 
     shellEnvironmentalVariables = {
@@ -37,7 +37,7 @@ async function execute({ command, workingDirectory }) {
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
   const commandOutput = await exec(dockerCommand, {
-    env: environmentVariablesRequiredByShell,
+    env: shellEnvironmentalVariables,
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
