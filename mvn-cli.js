@@ -55,11 +55,19 @@ async function execute({ command, workingDirectory }) {
 
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
-  return exec(dockerCommand, {
+  const commandOutput = await exec(dockerCommand, {
     env: shellEnvironmentalVariables,
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
+
+  if (commandOutput.stderr && !commandOutput.stdout) {
+    throw new Error(commandOutput.stderr);
+  } else if (commandOutput.stdout) {
+    console.error(commandOutput.stderr);
+  }
+
+  return commandOutput.stdout;
 }
 
 module.exports = {
