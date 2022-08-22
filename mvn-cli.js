@@ -1,5 +1,8 @@
 const { docker } = require("@kaholo/plugin-library");
-const { join: joinPaths } = require("path");
+const {
+  join: joinPaths,
+  resolve: resolvePath,
+} = require("path");
 const { homedir: getHomeDirectory } = require("os");
 const {
   exec,
@@ -33,21 +36,23 @@ async function execute({ command, workingDirectory }) {
   const volumeDefinitionsArray = [mavenCacheVolumeDefinition];
 
   if (workingDirectory) {
-    await assertPathExistence(workingDirectory);
-    const workingDirectoryVolumeDefinition = docker.createVolumeDefinition(workingDirectory);
+    const absoluteWorkingDirectory = resolvePath(workingDirectory);
 
-    dockerEnvironmentalVariables[workingDirectoryVolumeDefinition.mountPoint.name] = (
-      workingDirectoryVolumeDefinition.mountPoint.value
+    await assertPathExistence(absoluteWorkingDirectory);
+    const workingDirVolumeDefinition = docker.createVolumeDefinition(absoluteWorkingDirectory);
+
+    dockerEnvironmentalVariables[workingDirVolumeDefinition.mountPoint.name] = (
+      workingDirVolumeDefinition.mountPoint.value
     );
 
     shellEnvironmentalVariables = {
       ...shellEnvironmentalVariables,
       ...dockerEnvironmentalVariables,
-      [workingDirectoryVolumeDefinition.path.name]: workingDirectoryVolumeDefinition.path.value,
+      [workingDirVolumeDefinition.path.name]: workingDirVolumeDefinition.path.value,
     };
 
-    volumeDefinitionsArray.push(workingDirectoryVolumeDefinition);
-    dockerCommandBuildOptions.workingDirectory = workingDirectoryVolumeDefinition.mountPoint.value;
+    volumeDefinitionsArray.push(workingDirVolumeDefinition);
+    dockerCommandBuildOptions.workingDirectory = workingDirVolumeDefinition.mountPoint.value;
   }
 
   dockerCommandBuildOptions.volumeDefinitionsArray = volumeDefinitionsArray;
