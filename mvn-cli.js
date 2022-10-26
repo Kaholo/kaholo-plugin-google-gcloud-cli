@@ -35,25 +35,25 @@ async function execute({ command, workingDirectory }) {
 
   const volumeDefinitionsArray = [mavenCacheVolumeDefinition];
 
-  if (workingDirectory) {
-    const absoluteWorkingDirectory = resolvePath(workingDirectory);
+  const absoluteWorkingDirectory = workingDirectory ? resolvePath(workingDirectory) : process.cwd();
 
-    await assertPathExistence(absoluteWorkingDirectory);
-    const workingDirVolumeDefinition = docker.createVolumeDefinition(absoluteWorkingDirectory);
+  console.error(`absoluteWorkingDirectory is ${absoluteWorkingDirectory}`);
 
-    dockerEnvironmentalVariables[workingDirVolumeDefinition.mountPoint.name] = (
-      workingDirVolumeDefinition.mountPoint.value
-    );
+  await assertPathExistence(absoluteWorkingDirectory);
+  const workingDirVolumeDefinition = docker.createVolumeDefinition(absoluteWorkingDirectory);
 
-    shellEnvironmentalVariables = {
-      ...shellEnvironmentalVariables,
-      ...dockerEnvironmentalVariables,
-      [workingDirVolumeDefinition.path.name]: workingDirVolumeDefinition.path.value,
-    };
+  dockerEnvironmentalVariables[workingDirVolumeDefinition.mountPoint.name] = (
+    workingDirVolumeDefinition.mountPoint.value
+  );
 
-    volumeDefinitionsArray.push(workingDirVolumeDefinition);
-    dockerCommandBuildOptions.workingDirectory = workingDirVolumeDefinition.mountPoint.value;
-  }
+  shellEnvironmentalVariables = {
+    ...shellEnvironmentalVariables,
+    ...dockerEnvironmentalVariables,
+    [workingDirVolumeDefinition.path.name]: workingDirVolumeDefinition.path.value,
+  };
+
+  volumeDefinitionsArray.push(workingDirVolumeDefinition);
+  dockerCommandBuildOptions.workingDirectory = workingDirVolumeDefinition.mountPoint.value;
 
   dockerCommandBuildOptions.volumeDefinitionsArray = volumeDefinitionsArray;
   dockerCommandBuildOptions.environmentVariables = dockerEnvironmentalVariables;

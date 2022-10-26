@@ -17,15 +17,15 @@
           "viewName": "Working Directory",
           "type": "string",
           "description": "Path to a directory on the Kaholo agent which contains pom.xml and all other files needed to complete the Maven build.",
-          "placeholder": "/home/myproject/myapp",
-          "required": true
+          "placeholder": "my-maven-project",
+          "required": false
         },
         {
           "name": "command",
           "viewName": "Command",
           "type": "string",
           "description": "Maven command to do the required build.",
-          "placeholder": "mvn package",
+          "placeholder": "mvn --version",
           "required": true
         }
       ]
