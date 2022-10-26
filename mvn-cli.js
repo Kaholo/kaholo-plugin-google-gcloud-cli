@@ -37,8 +37,6 @@ async function execute({ command, workingDirectory }) {
 
   const absoluteWorkingDirectory = workingDirectory ? resolvePath(workingDirectory) : process.cwd();
 
-  console.error(`absoluteWorkingDirectory is ${absoluteWorkingDirectory}`);
-
   await assertPathExistence(absoluteWorkingDirectory);
   const workingDirVolumeDefinition = docker.createVolumeDefinition(absoluteWorkingDirectory);
 
