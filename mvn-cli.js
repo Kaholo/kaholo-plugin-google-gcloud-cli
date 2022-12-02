@@ -34,6 +34,7 @@ async function execute(params) {
 
   const dockerEnvironmentalVariables = {
     [mavenCacheVolumeDefinition.mountPoint.name]: mavenCacheVolumeDefinition.mountPoint.value,
+    ...environmentVariables,
   };
   let shellEnvironmentalVariables = {
     ...dockerEnvironmentalVariables,
@@ -55,7 +56,6 @@ async function execute(params) {
     ...shellEnvironmentalVariables,
     ...dockerEnvironmentalVariables,
     [workingDirVolumeDefinition.path.name]: workingDirVolumeDefinition.path.value,
-    ...environmentVariables,
   };
 
   volumeDefinitionsArray.push(workingDirVolumeDefinition);
