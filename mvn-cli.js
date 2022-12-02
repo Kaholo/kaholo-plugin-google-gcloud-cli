@@ -18,6 +18,7 @@ async function execute(params) {
   const {
     command,
     workingDirectory,
+    environmentVariables,
     customImage = MAVEN_DOCKER_IMAGE,
   } = params;
 
@@ -33,6 +34,7 @@ async function execute(params) {
 
   const dockerEnvironmentalVariables = {
     [mavenCacheVolumeDefinition.mountPoint.name]: mavenCacheVolumeDefinition.mountPoint.value,
+    ...environmentVariables,
   };
   let shellEnvironmentalVariables = {
     ...dockerEnvironmentalVariables,
