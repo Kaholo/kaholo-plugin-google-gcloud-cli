@@ -17,8 +17,14 @@
           "viewName": "Working Directory",
           "type": "string",
           "description": "Path to a directory on the Kaholo agent which contains pom.xml and all other files needed to complete the Maven build.",
-          "placeholder": "my-maven-project",
-          "required": false
+          "placeholder": "my-maven-project"
+        },
+        {
+          "name": "customImage",
+          "viewName": "Custom Image",
+          "type": "string",
+          "description": "Docker-style custom maven image with tag",
+          "placeholder": "maven:latest"
         },
         {
           "name": "command",
