@@ -27,6 +27,14 @@
           "placeholder": "maven:latest"
         },
         {
+          "name": "environmentVariables",
+          "viewName": "Environment Variables",
+          "description": "One key=value pair per line to be set as environment variables",
+          "placeholder": "USER=sally\nDEBUG_LEVEL=3",
+          "type": "text",
+          "parserType": "keyValuePairs"
+        },
+        {
           "name": "command",
           "viewName": "Command",
           "type": "string",

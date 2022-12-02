@@ -18,6 +18,7 @@ async function execute(params) {
   const {
     command,
     workingDirectory,
+    environmentVariables,
     customImage = MAVEN_DOCKER_IMAGE,
   } = params;
 
@@ -54,6 +55,7 @@ async function execute(params) {
     ...shellEnvironmentalVariables,
     ...dockerEnvironmentalVariables,
     [workingDirVolumeDefinition.path.name]: workingDirVolumeDefinition.path.value,
+    ...environmentVariables,
   };
 
   volumeDefinitionsArray.push(workingDirVolumeDefinition);
