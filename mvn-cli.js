@@ -14,10 +14,16 @@ const {
   MAVEN_CACHE_DIRECTORY_NAME,
 } = require("./consts.json");
 
-async function execute({ command, workingDirectory }) {
+async function execute(params) {
+  const {
+    command,
+    workingDirectory,
+    customImage = MAVEN_DOCKER_IMAGE,
+  } = params;
+
   const dockerCommandBuildOptions = {
     command: docker.sanitizeCommand(command, MAVEN_CLI_NAME),
-    image: MAVEN_DOCKER_IMAGE,
+    image: customImage,
   };
 
   const mavenAgentCachePath = joinPaths(getHomeDirectory(), MAVEN_CACHE_DIRECTORY_NAME);
