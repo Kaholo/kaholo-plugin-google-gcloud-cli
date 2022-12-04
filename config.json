@@ -7,6 +7,19 @@
   "imgUrl": "logo.png",
   "main": "app.js",
   "description": "Kaholo Plugin for Maven CLI",
+  "category": [
+    "CI/CD"
+  ],
+  "keywords": [
+    "mvn",
+    "cli",
+    "java",
+    "build",
+    "package",
+    "jar",
+    "pom",
+    "apache"
+  ],
   "methods": [
     {
       "name": "runCommand",
