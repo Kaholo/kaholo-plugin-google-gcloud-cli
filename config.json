@@ -1,12 +1,25 @@
 {
   "name": "maven",
   "viewName": "Maven",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "executer",
   "execProgram": "node",
   "imgUrl": "logo.png",
   "main": "app.js",
   "description": "Kaholo Plugin for Maven CLI",
+  "category": [
+    "CI/CD"
+  ],
+  "keywords": [
+    "mvn",
+    "cli",
+    "java",
+    "build",
+    "package",
+    "jar",
+    "pom",
+    "apache"
+  ],
   "methods": [
     {
       "name": "runCommand",
