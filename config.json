@@ -1,12 +1,25 @@
 {
   "name": "maven",
   "viewName": "Maven",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "type": "executer",
   "execProgram": "node",
   "imgUrl": "logo.png",
   "main": "app.js",
   "description": "Kaholo Plugin for Maven CLI",
+  "category": [
+    "CI/CD"
+  ],
+  "keywords": [
+    "mvn",
+    "cli",
+    "java",
+    "build",
+    "package",
+    "jar",
+    "pom",
+    "apache"
+  ],
   "methods": [
     {
       "name": "runCommand",
@@ -17,15 +30,29 @@
           "viewName": "Working Directory",
           "type": "string",
           "description": "Path to a directory on the Kaholo agent which contains pom.xml and all other files needed to complete the Maven build.",
-          "placeholder": "/home/myproject/myapp",
-          "required": true
+          "placeholder": "my-maven-project"
+        },
+        {
+          "name": "customImage",
+          "viewName": "Custom Image",
+          "type": "string",
+          "description": "Docker-style custom maven image with tag",
+          "placeholder": "maven:latest"
+        },
+        {
+          "name": "environmentVariables",
+          "viewName": "Environment Variables",
+          "description": "One key=value pair per line to be set as environment variables",
+          "placeholder": "USER=sally\nDEBUG_LEVEL=3",
+          "type": "text",
+          "parserType": "keyValuePairs"
         },
         {
           "name": "command",
           "viewName": "Command",
           "type": "string",
           "description": "Maven command to do the required build.",
-          "placeholder": "mvn package",
+          "placeholder": "mvn --version",
           "required": true
         }
       ]
