@@ -1,7 +1,7 @@
 {
   "name": "maven",
   "viewName": "Maven",
-  "version": "2.1.0",
+  "version": "2.1.0-kp-1019",
   "type": "executer",
   "execProgram": "node",
   "imgUrl": "logo.png",
@@ -37,21 +37,28 @@
           "viewName": "Custom Image",
           "type": "string",
           "description": "Docker-style custom maven image with tag",
-          "placeholder": "maven:latest"
+          "placeholder": "maven:3.8.6"
         },
         {
           "name": "environmentVariables",
           "viewName": "Environment Variables",
-          "description": "One key=value pair per line to be set as environment variables",
+          "description": "one-per-line key=value environment variables for Maven's execution environment",
           "placeholder": "USER=sally\nDEBUG_LEVEL=3",
           "type": "text",
+          "parserType": "keyValuePairs"
+        },
+        {
+          "name": "secretEnvVars",
+          "viewName": "Secret Environment Variables",
+          "type": "vault",
+          "description": "vaulted one-per-line key=value environment variables for Maven's execution environment",
           "parserType": "keyValuePairs"
         },
         {
           "name": "command",
           "viewName": "Command",
           "type": "string",
-          "description": "Maven command to do the required build.",
+          "description": "Maven command to do the required build",
           "placeholder": "mvn --version",
           "required": true
         }
