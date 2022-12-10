@@ -33,7 +33,7 @@ This parameter is a one-per-line KEY=VALUE list of environment variables that wi
 ### Parameter: Secret Environment Variables
 This parameter is a one-per-line KEY=VALUE list of environment variables that will be set in the environment where the Maven Command runs. The only difference from parameter `Environment Variables` is that these are securely stored in the Kaholo Vault and will not appear in the logs or user interface.
 
-### Parameter: Custom Image
+### Parameter: Custom Docker Image
 By default the plugin uses the standarad `maven:3.8.6` image from Docker Hub. If there is a requirement to use another image, for example one supporting Selenium testing, then you can specify another image here. Try `maven:latest` for the most recently build maven image.
 
 ### Parameter: Command
