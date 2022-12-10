@@ -34,9 +34,9 @@
         },
         {
           "name": "customImage",
-          "viewName": "Custom Image",
+          "viewName": "Custom Docker Image",
           "type": "string",
-          "description": "Docker-style custom maven image with tag",
+          "description": "Optionally specify an alternative docker image:tag to use.",
           "placeholder": "maven:3.8.6"
         },
         {
