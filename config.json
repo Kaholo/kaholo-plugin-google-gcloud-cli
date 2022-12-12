@@ -1,7 +1,7 @@
 {
   "name": "maven",
   "viewName": "Maven",
-  "version": "2.1.0-kp-1019",
+  "version": "2.1.0",
   "type": "executer",
   "execProgram": "node",
   "imgUrl": "logo.png",
