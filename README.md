@@ -30,8 +30,11 @@ This parameter is a one-per-line KEY=VALUE list of environment variables that wi
     IP_ADDR=10.55.23.2
     JAVA_VERSION=18
 
-### Parameter: Custom Image
-By default the plugin uses the standarad `maven:latest` image from Docker Hub. If there is a requirement to use another image, for example one supporting Selenium testing, then you can specify another image here.
+### Parameter: Secret Environment Variables
+This parameter is a one-per-line KEY=VALUE list of environment variables that will be set in the environment where the Maven Command runs. The only difference from parameter `Environment Variables` is that these are securely stored in the Kaholo Vault and will not appear in the logs or user interface.
+
+### Parameter: Custom Docker Image
+By default the plugin uses the standarad `maven:3.8.6` image from Docker Hub. If there is a requirement to use another image, for example one supporting Selenium testing, then you can specify another image here. Try `maven:latest` for the most recently build maven image.
 
 ### Parameter: Command
 This is where you put the maven command you'd like to run, for example `mvn package`. Note that pom.xml should probably be found in the Working Directoy for most commands to work, unless an alternative location is specified in the command with `-f`.
