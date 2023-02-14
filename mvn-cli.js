@@ -5,8 +5,8 @@ const {
 } = require("path");
 const { homedir: getHomeDirectory } = require("os");
 const {
-  exec,
   assertPathExistence,
+  asyncExec,
 } = require("./helpers");
 const {
   MAVEN_DOCKER_IMAGE,
@@ -68,11 +68,19 @@ async function execute(params) {
 
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
-  const commandOutput = await exec(dockerCommand, {
-    env: shellEnvironmentalVariables,
+  const commandOutput = await asyncExec({
+    command: dockerCommand,
+    options: {
+      env: shellEnvironmentalVariables,
+    },
+    onProgressFn: console.info,
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
+
+  if (commandOutput.error) {
+    throw commandOutput.error;
+  }
 
   if (commandOutput.stderr && !commandOutput.stdout) {
     throw new Error(commandOutput.stderr);
