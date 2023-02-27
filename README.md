@@ -23,6 +23,9 @@ Working directory is typically a path relative to the default one, e.g. `/twiddl
 
 The absolute path in this case would be `/twiddlebug/workspace/myproject`. You could also leave Working Directory empty and descend into `myproject` using the Maven Command... `mvn package -f myproject/pom.xml`.
 
+### Parameter: Custom Docker Image
+In some circumstances a docker image other than the default `maven` one might be needed, for example if using Maven to run automated Selenium testing one may choose to use `markhobson/maven-chrome:jdk-8` instead. If that is the case provide the docker image here using the same `registryURL:port:repository:tag` notation one uses with command `docker pull`. Not every image is assured to work, but a suitable image is probably available for most use cases. If you must build a custom image from a `Dockerfile`, use the [Docker Plugin](https://github.com/Kaholo/kaholo-plugin-docker/releases) with method "Build Image". To get the most recently available maven image use `maven:latest`. To make the plugin use a specific image by default, change the value for `MAVEN_DOCKER_IMAGE` in consts.json and re-install the plugin.
+
 ### Parameter: Environment Variables
 This parameter is a one-per-line KEY=VALUE list of environment variables that will be set in the environment where the Maven Command runs. For example:
 
@@ -32,9 +35,6 @@ This parameter is a one-per-line KEY=VALUE list of environment variables that wi
 
 ### Parameter: Secret Environment Variables
 This parameter is a one-per-line KEY=VALUE list of environment variables that will be set in the environment where the Maven Command runs. The only difference from parameter `Environment Variables` is that these are securely stored in the Kaholo Vault and will not appear in the logs or user interface.
-
-### Parameter: Custom Docker Image
-By default the plugin uses the standarad `maven:3.8.6` image from Docker Hub. If there is a requirement to use another image, for example one supporting Selenium testing, then you can specify another image here. Try `maven:latest` for the most recently build maven image.
 
 ### Parameter: Command
 This is where you put the maven command you'd like to run, for example `mvn package`. Note that pom.xml should probably be found in the Working Directoy for most commands to work, unless an alternative location is specified in the command with `-f`.
