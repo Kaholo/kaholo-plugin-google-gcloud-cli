@@ -73,7 +73,7 @@ async function execute(params) {
     options: {
       env: shellEnvironmentalVariables,
     },
-    onProgressFn: console.info,
+    onProgressFn: process.stdout.write.bind(process.stdout),
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
