@@ -21,10 +21,16 @@ async function execute(params) {
     environmentVariables,
     secretEnvVars,
     customImage = MAVEN_DOCKER_IMAGE,
+    colorOutput,
   } = params;
 
+  let colorCommand = command;
+  if (colorOutput && !command.includes("style.color")) {
+    colorCommand = `${command} -Dstyle.color=always`;
+  }
+
   const dockerCommandBuildOptions = {
-    command: docker.sanitizeCommand(command, MAVEN_CLI_NAME),
+    command: docker.sanitizeCommand(colorCommand, MAVEN_CLI_NAME),
     image: customImage,
   };
 
@@ -87,8 +93,6 @@ async function execute(params) {
   } else if (commandOutput.stdout) {
     console.error(commandOutput.stderr);
   }
-
-  return commandOutput.stdout;
 }
 
 module.exports = {

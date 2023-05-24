@@ -24,6 +24,7 @@
     {
       "name": "runCommand",
       "viewName": "Run Maven Command",
+      "allowEmptyResult": true,
       "params": [
         {
           "name": "workingDirectory",
@@ -61,6 +62,13 @@
           "description": "Maven command to do the required build",
           "placeholder": "mvn --version",
           "required": true
+        },
+        {
+          "name": "colorOutput",
+          "viewName": "Use Colored Output",
+          "type": "boolean",
+          "description": "Adds -Dstyle.color=always to the command string",
+          "default": true
         }
       ]
     }
