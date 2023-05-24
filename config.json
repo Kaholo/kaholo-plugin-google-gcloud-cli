@@ -1,7 +1,7 @@
 {
   "name": "maven",
   "viewName": "Maven",
-  "version": "2.2.0",
+  "version": "2.2.0-dev",
   "type": "executer",
   "execProgram": "node",
   "imgUrl": "logo.png",
@@ -30,7 +30,7 @@
           "name": "workingDirectory",
           "viewName": "Working Directory",
           "type": "string",
-          "description": "Path to a directory on the Kaholo agent which contains pom.xml and all other files needed to complete the Maven build.",
+          "description": "Path to a directory on the Kaholo agent that contains pom.xml and all other files needed to complete the Maven build.",
           "placeholder": "my-maven-project"
         },
         {
@@ -44,7 +44,7 @@
           "name": "environmentVariables",
           "viewName": "Environment Variables",
           "description": "one-per-line key=value environment variables for Maven's execution environment",
-          "placeholder": "USER=sally\nDEBUG_LEVEL=3",
+          "placeholder": "USER=olivia\nDEBUG_LEVEL=3",
           "type": "text",
           "parserType": "keyValuePairs"
         },
@@ -67,7 +67,7 @@
           "name": "colorOutput",
           "viewName": "Use Colored Output",
           "type": "boolean",
-          "description": "Adds -Dstyle.color=always to the command string",
+          "description": "Adds \"-Dstyle.color=always\" to the command string",
           "default": true
         }
       ]

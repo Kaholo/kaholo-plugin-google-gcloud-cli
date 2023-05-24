@@ -40,3 +40,6 @@ This parameter is a one-per-line KEY=VALUE list of environment variables that wi
 This is where you put the maven command you'd like to run, for example `mvn package`. Note that pom.xml should probably be found in the Working Directoy for most commands to work, unless an alternative location is specified in the command with `-f`.
 
 A good command to just test if the plugin is correctly installed and working is `mvn --version`.
+
+### Parameter: Use Color Output
+This is a boolean parameter that if enabled will add `-Dstyle.color=always` to the command, providing colored output in the Activity Log. If the command itself already contains directives regarding `style.color` then this parameter has no effect.
