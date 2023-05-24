@@ -87,8 +87,6 @@ async function execute(params) {
   } else if (commandOutput.stdout) {
     console.error(commandOutput.stderr);
   }
-
-  return commandOutput.stdout;
 }
 
 module.exports = {
