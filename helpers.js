@@ -2,6 +2,9 @@ const util = require("util");
 const childProcess = require("child_process");
 const { access } = require("fs/promises");
 const fs = require("fs");
+const {
+  EMPTY_RETURN_VALUE,
+} = require("./consts.json");
 
 async function assertPathExistence(path) {
   try {
@@ -18,46 +21,27 @@ async function asyncExec(params) {
     options = {},
   } = params;
 
-  let childProcessError;
   let childProcessInstance;
   try {
     childProcessInstance = childProcess.exec(command, options);
   } catch (error) {
-    return { error };
+    throw new Error(error);
   }
 
-  const outputChunks = [];
-
   childProcessInstance.stdout.on("data", (data) => {
-    outputChunks.push({ type: "stdout", data });
-
     onProgressFn?.(data);
   });
   childProcessInstance.stderr.on("data", (data) => {
-    outputChunks.push({ type: "stderr", data });
-
     onProgressFn?.(data);
-  });
-  childProcessInstance.on("error", (error) => {
-    childProcessError = error;
   });
 
   try {
     await util.promisify(childProcessInstance.on.bind(childProcessInstance))("close");
   } catch (error) {
-    childProcessError = error;
+    throw new Error(error);
   }
 
-  const outputObject = outputChunks.reduce((acc, cur) => ({
-    ...acc,
-    [cur.type]: `${acc[cur.type]}${cur.data.toString()}`,
-  }), { stdout: "", stderr: "" });
-
-  if (childProcessError) {
-    outputObject.error = childProcessError;
-  }
-
-  return outputObject;
+  return EMPTY_RETURN_VALUE;
 }
 
 module.exports = {

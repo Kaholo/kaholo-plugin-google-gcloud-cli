@@ -74,7 +74,7 @@ async function execute(params) {
 
   const dockerCommand = docker.buildDockerCommand(dockerCommandBuildOptions);
 
-  const commandOutput = await asyncExec({
+  return asyncExec({
     command: dockerCommand,
     options: {
       env: shellEnvironmentalVariables,
@@ -83,16 +83,6 @@ async function execute(params) {
   }).catch((error) => {
     throw new Error(error.stderr || error.stdout || error.message || error);
   });
-
-  if (commandOutput.error) {
-    throw commandOutput.error;
-  }
-
-  if (commandOutput.stderr && !commandOutput.stdout) {
-    throw new Error(commandOutput.stderr);
-  } else if (commandOutput.stdout) {
-    console.error(commandOutput.stderr);
-  }
 }
 
 module.exports = {
